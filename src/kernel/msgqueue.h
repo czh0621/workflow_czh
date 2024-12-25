@@ -34,6 +34,7 @@ extern "C"
  * where spaces of one pointer size should be available for internal usage.
  * 'linkoff' can be positive or negative or zero. */
 
+// 双链表 组成生产者队列 所得力度小
 msgqueue_t *msgqueue_create(size_t maxlen, int linkoff);
 void *msgqueue_get(msgqueue_t *queue);
 void msgqueue_put(void *msg, msgqueue_t *queue);

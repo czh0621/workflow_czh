@@ -62,6 +62,7 @@ public:
 					  series_callback_t callback);
 };
 
+// 每个任务都有工作流 SeriesWork
 class SeriesWork
 {
 public:
@@ -149,7 +150,7 @@ private:
 	int back;
 	bool canceled;
 	bool finished;
-	const ParallelTask *in_parallel;
+	const ParallelTask *in_parallel; // 标识属于哪个并行任务
 	std::mutex mutex;
 
 protected:

@@ -37,7 +37,7 @@ struct __msgqueue
 	size_t msg_cnt;
 	int linkoff;
 	int nonblock;
-	void *head1;
+	void *head1; // 避免copy 直接使用用户的内存
 	void *head2;
 	void **get_head;
 	void **put_head;
@@ -64,14 +64,15 @@ void msgqueue_set_block(msgqueue_t *queue)
 
 void msgqueue_put(void *msg, msgqueue_t *queue)
 {
-	void **link = (void **)((char *)msg + queue->linkoff);
+	void **link = (void **)((char *)msg + queue->linkoff);// 等价于 msg + next指针作为的结构体 其中queue->linkoff为next指针
 
 	*link = NULL;
 	pthread_mutex_lock(&queue->put_mutex);
+  // 阻塞模式下，如果队列已满，则等待
 	while (queue->msg_cnt > queue->msg_max - 1 && !queue->nonblock)
 		pthread_cond_wait(&queue->put_cond, &queue->put_mutex);
 
-	*queue->put_tail = link;
+	*queue->put_tail = link; //
 	queue->put_tail = link;
 	queue->msg_cnt++;
 	pthread_mutex_unlock(&queue->put_mutex);
@@ -80,7 +81,7 @@ void msgqueue_put(void *msg, msgqueue_t *queue)
 
 void msgqueue_put_head(void *msg, msgqueue_t *queue)
 {
-	void **link = (void **)((char *)msg + queue->linkoff);
+	void **link = (void **)((char *)msg + queue->linkoff); 
 
 	pthread_mutex_lock(&queue->put_mutex);
 	while (*queue->get_head)

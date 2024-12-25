@@ -23,6 +23,7 @@
 #include <pthread.h>
 #include "list.h"
 
+// 执行队列
 class ExecQueue
 {
 public:

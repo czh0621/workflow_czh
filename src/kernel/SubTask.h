@@ -38,7 +38,7 @@ public:
 
 private:
 	class ParallelTask *parent;
-	void *pointer;
+	void *pointer; // 任务流指针
 
 public:
 	SubTask()

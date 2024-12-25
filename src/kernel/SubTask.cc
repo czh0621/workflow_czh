@@ -26,7 +26,7 @@ void SubTask::subtask_done()
 	while (1)
 	{
 		parent = cur->parent;
-		cur = cur->done();
+		cur = cur->done(); // 调用回调 返回下一个任务
 		if (cur)
 		{
 			cur->parent = parent;

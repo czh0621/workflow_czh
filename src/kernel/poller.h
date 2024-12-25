@@ -97,6 +97,7 @@ extern "C"
 {
 #endif
 
+// epoll 封装
 poller_t *poller_create(const struct poller_params *params);
 int poller_start(poller_t *poller);
 int poller_add(const struct poller_data *data, int timeout, poller_t *poller);

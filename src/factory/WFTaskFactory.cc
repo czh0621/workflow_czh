@@ -345,10 +345,11 @@ struct __counter_node
 	__WFNamedCounterTask *task;
 };
 
+// 多个计数器任务共享一个计数队列
 static class __NamedCounterMap
 {
 public:
-	using CounterList = __NamedObjectList<struct __counter_node>;
+	using CounterList = __NamedObjectList<struct __counter_node>; // list 链表 计数队列重名开链
 
 public:
 	WFCounterTask *create(const std::string& name, unsigned int target_value,
@@ -379,7 +380,7 @@ public:
 	{
 		root_.rb_node = NULL;
 	}
-} __counter_map;
+} __counter_map; //全局static
 
 class __WFNamedCounterTask : public WFCounterTask
 {
@@ -435,7 +436,7 @@ bool __NamedCounterMap::count_n_locked(CounterList *counters, unsigned int n,
 	while (n > 0)
 	{
 		node = list_entry(counters->head.next, struct __counter_node, list);
-		if (n >= node->target_value)
+		if (n >= node->target_value) // 一次count 可以唤醒多个计数器
 		{
 			n -= node->target_value;
 			node->target_value = 0;

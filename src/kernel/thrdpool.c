@@ -49,7 +49,7 @@ static void __thrdpool_exit_routine(void *context)
 	/* One thread joins another. Don't need to keep all thread IDs. */
 	pthread_mutex_lock(&pool->mutex);
 	tid = pool->tid;
-	pool->tid = pthread_self();
+	pool->tid = pthread_self(); // last worker thread
 	if (--pool->nthreads == 0 && pool->terminate)
 		pthread_cond_signal(pool->terminate);
 

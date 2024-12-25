@@ -109,7 +109,6 @@ void Executor::executor_cancel(const struct thrdpool_task *task)
 		list_del(pos);
 		session = entry->session;
 		free(entry);
-
 		session->handle(ES_STATE_CANCELED, 0);
 	}
 }
@@ -143,7 +142,7 @@ int Executor::request(ExecSession *session, ExecQueue *queue)
 		pthread_mutex_unlock(&queue->mutex);
 	}
 
-	return -!entry;
+	return -!entry; // return 0 if success, -1 if fail
 }
 
 int Executor::increase_thread()

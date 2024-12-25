@@ -70,9 +70,12 @@ else ()
 	set(WORKFLOW_LIB workflow pthread OpenSSL::SSL OpenSSL::Crypto ${LIBRT})
 endif ()
 
+add_compile_options(-fexceptions)
+find_package(spdlog REQUIRED)
+
 foreach(src ${TEST_LIST})
 	add_executable(${src} EXCLUDE_FROM_ALL ${src}.cc)
-	target_link_libraries(${src} ${WORKFLOW_LIB} GTest::GTest GTest::Main)
+	target_link_libraries(${src} ${WORKFLOW_LIB} GTest::GTest GTest::Main spdlog::spdlog)
 	add_test(${src} ${src})
 	add_dependencies(check ${src})
 endforeach()

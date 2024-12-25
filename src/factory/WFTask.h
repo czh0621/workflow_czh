@@ -76,18 +76,19 @@ public:
 	int get_error() const { return this->error; }
 
 public:
+  // 回调通知函数
 	void set_callback(std::function<void (WFThreadTask<INPUT, OUTPUT> *)> cb)
 	{
 		this->callback = std::move(cb);
 	}
 
 protected:
-	virtual SubTask *done()
+	virtual SubTask *done() 
 	{
 		SeriesWork *series = series_of(this);
 
 		if (this->callback)
-			this->callback(this);
+			this->callback(this); // user call back
 
 		delete this;
 		return series->pop();
@@ -428,6 +429,7 @@ protected:
 	virtual ~WFGenericTask() { }
 };
 
+// 无名计算器任务
 class WFCounterTask : public WFGenericTask
 {
 public:

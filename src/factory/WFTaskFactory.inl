@@ -754,7 +754,7 @@ template<class INPUT, class OUTPUT>
 class __WFThreadTask : public WFThreadTask<INPUT, OUTPUT>
 {
 protected:
-	virtual void execute()
+	virtual void execute() // 计算function
 	{
 		this->routine(&this->input, &this->output);
 	}

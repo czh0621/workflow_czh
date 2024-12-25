@@ -27,14 +27,14 @@
 SeriesWork::SeriesWork(SubTask *first, series_callback_t&& cb) :
 	callback(std::move(cb))
 {
-	this->queue = this->buf;
+	this->queue = this->buf; // buf 为存储subtask指针的数组
 	this->queue_size = sizeof this->buf / sizeof *this->buf;
 	this->front = 0;
 	this->back = 0;
 	this->canceled = false;
 	this->finished = false;
 	assert(!series_of(first));
-	first->set_pointer(this);
+	first->set_pointer(this); // 标识subtask属于哪个series
 	this->first = first;
 	this->last = NULL;
 	this->context = NULL;

@@ -39,6 +39,7 @@ static inline void INIT_LIST_HEAD(struct list_head *list)
  * This is only for internal list manipulation where we know
  * the prev/next entries already!
  */
+// 在prev和next之间插入entry
 static inline void __list_add(struct list_head *entry,
 			      struct list_head *prev,
 			      struct list_head *next)

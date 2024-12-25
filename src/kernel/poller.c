@@ -122,7 +122,7 @@ static inline int __poller_mod_fd(int fd, int old_event,
 
 static inline int __poller_create_timerfd()
 {
-	return timerfd_create(CLOCK_MONOTONIC, 0);
+	return timerfd_create(CLOCK_MONOTONIC, 0); // 定时器fd
 }
 
 static inline int __poller_close_timerfd(int fd)
@@ -1114,7 +1114,7 @@ static int __poller_create_timer(poller_t *poller)
 
 	if (timerfd >= 0)
 	{
-		if (__poller_add_timerfd(timerfd, poller) >= 0)
+		if (__poller_add_timerfd(timerfd, poller) >= 0) //将timerfd添加到epoll上
 		{
 			poller->timerfd = timerfd;
 			return 0;
@@ -1134,10 +1134,10 @@ poller_t *__poller_create(void **nodes_buf, const struct poller_params *params)
 	if (!poller)
 		return NULL;
 
-	poller->pfd = __poller_create_pfd();
+	poller->pfd = __poller_create_pfd(); // 创建epoll实例
 	if (poller->pfd >= 0)
 	{
-		if (__poller_create_timer(poller) >= 0)
+		if (__poller_create_timer(poller) >= 0) // 创建timer fd 并添加到epoll 实例上
 		{
 			ret = pthread_mutex_init(&poller->mutex, NULL);
 			if (ret == 0)
